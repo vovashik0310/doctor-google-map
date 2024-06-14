@@ -1,4 +1,6 @@
-
+html,body{
+  font-size: 16px;
+}
 .App-header {
   background-color: white;
   min-height: 10vh;
@@ -13,27 +15,25 @@
 .main{
   display: flex;
 }
-.circle {
-  background-color: #d83b01;
-  border-radius: 50%;
-  color: #fff;
-  height: 2.5em;
-  position: relative;
-  width: 2.5em;
+.sidebar{
+  width: 25%;
+  padding-top: 50px;
+  padding-left: 50px;
 
-  border: 1px solid transparent;
 }
-
-.circleText {
-  text-align: center;
-  height: 50%;
-  left: 50%;
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 50%;
+.sidebar-list{
+  display: flex;
+  flex-direction: column;
 }
-
-.hover {
-  background-color: #0078d4;
+.sidebar-list-item{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 6px;
+  padding: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.list-item-check{
 }

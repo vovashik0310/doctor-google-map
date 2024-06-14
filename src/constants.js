@@ -1,7 +1,7 @@
 export const doctorCategories = [
     {
         id:1,
-        name:"Outpatient Radiology/Image centers",
+        name:"Outpatient Radiology / Image centers",
         value:"Outpatient Radiology,Imaging Centers"
     },
     {
@@ -21,7 +21,7 @@ export const doctorCategories = [
     },
     {
         id:5,
-        name:"Primary Care/General practitioner/Internal Medicine",
+        name:"Primary Care / General practitioner / Internal Medicine",
         value:"Primary Care,General Practitioner,Internal Medicine"
     },
     {
