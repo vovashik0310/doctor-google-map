@@ -82,7 +82,7 @@ function App() {
         <div className="sidebar">
           <div className="sidebar-list">
             {doctorCategories.map((item, index) => (
-              <div className="sidebar-list-item" key={index} onClick={(e) => handleDivClick(e, item.value)}>
+              <div className="sidebar-list-item" style={{color:item.color}} key={index} onClick={(e) => handleDivClick(e, item.value)}>
                 <input
                   className="list-item-check"
                   type="checkbox"

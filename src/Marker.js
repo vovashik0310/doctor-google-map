@@ -1,13 +1,13 @@
 import { FaMapMarkerAlt } from "react-icons/fa";
 
 const colorSets = [
-  "#FF5733",
-  "#3498DB",
-  "#2ECC71",
-  "#F1C40F",
-  "#9B59B6",
-  "#E67E22",
-  "#1ABC9C",
+  "rgb(251,201,43)",
+  "rgb(243,125,73)",
+  "rgb(254,31,86)",
+  "rgb(205,41, 162)",
+  "rgb(152,44,200)",
+  "rgb(111,48,243)",
+  "rgb(75, 105, 246)",
 ];
 
 const Marker = ({ text, tooltip, colorId }) => {
