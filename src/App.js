@@ -3,24 +3,19 @@ import axios from "axios";
 import GoogleMap from "google-maps-react-markers";
 import logo from "./logo.svg";
 import "./App.css";
-import Marker from "./Marker";
-import { doctorCategories } from "./constants";
+import Marker from "./components/Marker";
+import { doctorCategories, mapCenter , mapStyles} from "./config/constants";
+import LinkItem from "./components/LinkItem";
 
 function App() {
   const mapRef = useRef(null);
   const [mapReady, setMapReady] = useState(false);
+  const [infoLocation, setInfolocation] = useState(mapCenter);
+  const [infoDoctorData, setInfoDoctorData] = useState(null);
   const [doctorDatas, setDoctorDatas] = useState([]);
   const [categories, setCategories] = useState([
     "Outpatient Radiology",
     "Imaging Centers",
-    "Orthopedic Surgery",
-    "Chiropractor",
-    "Pain Management",
-    "Primary Care",
-    "General Practitioner",
-    "Internal Medicine",
-    "Neurology",
-    "Oncologist",
   ]);
 
   const onGoogleApiLoaded = ({ map, maps }) => {
@@ -55,12 +50,24 @@ function App() {
     });
     setCategories(new_categoreis);
   };
-  
+
   const handleDivClick = (event, ctgory) => {
-    const checkbox = event.currentTarget.querySelector('.list-item-check');
-    checkbox.checked = !checkbox.checked;
-    console.log(ctgory)
-    handleCheckboxClick(ctgory)
+    console.log(event.target);
+    if (event.target.type === "checkbox") {
+      const checkbox = event.target;
+      console.log(checkbox.checked);
+      checkbox.checked = checkbox.checked;
+    } else {
+      const checkbox = event.target.querySelector(".list-item-check");
+      checkbox.checked = !checkbox.checked;
+    }
+    handleCheckboxClick(ctgory);
+  };
+
+  const handleMarkerClick = (item, location) => {
+    console.log(location);
+    setInfolocation(location);
+    setInfoDoctorData(item);
   };
 
   const getColorId = (ctgory) => {
@@ -82,30 +89,80 @@ function App() {
         <div className="sidebar">
           <div className="sidebar-list">
             {doctorCategories.map((item, index) => (
-              <div className="sidebar-list-item" style={{color:item.color}} key={index} onClick={(e) => handleDivClick(e, item.value)}>
-                <input
-                  className="list-item-check"
-                  type="checkbox"
-                  onClick={() => handleCheckboxClick(item.value)}
-                  defaultChecked
-                />
-                {item.name}
-              </div>
+              <LinkItem
+                name={item.name}
+                key={index}
+                isDefaultChecked={index === 0}
+                color={item.color}
+                onItemClick={(e) => handleDivClick(e, item.value)}
+                onCheckboxClick={(e) => handleCheckboxClick(item.value)}
+              />
             ))}
+          </div>
+          <div className="total-list">
+            Total : {doctorDatas.length}
           </div>
         </div>
         <div style={{ width: "75%" }}>
           <GoogleMap
             apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
-            defaultCenter={{ lat: 40.7174, lng: -74.043228 }}
-            // defaultCenter={{ lat: 51.506, lng: -0.169 }}
+            defaultCenter={mapCenter}
             defaultZoom={13}
-            options={{}}
+            options={{
+              styles: mapStyles,
+              disableDefaultUI: true,
+              zoomControl: true,
+              clickableIcons: false,
+              gestureHandling: 'greedy',
+              // controlSize: isMobile ? 20 : 40,
+            }}
             mapMinHeight="100vh"
             mapMinWidth="65vw"
             onGoogleApiLoaded={onGoogleApiLoaded}
-            onChange={(map) => console.log("Map moved", map)}
           >
+            {infoDoctorData && (
+              <div
+                lat={infoLocation.lat}
+                lng={infoLocation.lng}
+                className="info-doctor"
+              >
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="info-doctor-close-icon"
+                  onClick={() => setInfoDoctorData(null)}
+                >
+                  <path
+                    d="M18 6L6 18"
+                    stroke="black"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M6 6L18 18"
+                    stroke="black"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+
+                <div className="info-doctor-name">
+                  {infoDoctorData.displayName}
+                </div>
+                <div className="info-doctor-address">
+                  {infoDoctorData.address}
+                </div>
+                <div className="info-doctor-distance">
+                  {infoDoctorData.distance} miles
+                </div>
+              </div>
+            )}
+            <Marker lat={mapCenter.lat} lng={mapCenter.lng} />
             {doctorDatas.map((item, index) => (
               <Marker
                 key={index}
@@ -114,6 +171,9 @@ function App() {
                 text={index}
                 tooltip={item.displayName}
                 colorId={getColorId(item.category)}
+                onClick={(e) =>
+                  handleMarkerClick(item, { lat: item.lat, lng: item.lng })
+                }
               />
             ))}
           </GoogleMap>
