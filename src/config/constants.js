@@ -44,8 +44,8 @@ export const doctorCategories = [
 ];
 
 export const mapCenter = {
-  lat: 40.7174,
-  lng: -74.043228,
+  lat: 40.75224,
+  lng: -74.05364,
 };
 
 export const mapStyles = [
@@ -59,3 +59,22 @@ export const mapStyles = [
     ],
   },
 ];
+
+export const rad = (ang) => {
+  return (ang * Math.PI) / 180;
+};
+
+export const getDistance = (p1Lat, p1Lng, p2Lat, p2Lng) => {
+  const R = 3958.756; // Earth's radius
+  let dLat = rad(p2Lat - p1Lat);
+  let dLong = rad(p2Lng - p1Lng);
+  var a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(rad(p1Lat)) *
+      Math.cos(rad(p2Lat)) *
+      Math.sin(dLong / 2) *
+      Math.sin(dLong / 2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  var d = R * c;
+  return d.toFixed(3); // returns the distance in meter
+};

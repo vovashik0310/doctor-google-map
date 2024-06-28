@@ -4,8 +4,9 @@ import GoogleMap from "google-maps-react-markers";
 import logo from "./logo.svg";
 import "./App.css";
 import Marker from "./components/Marker";
-import { doctorCategories, mapCenter , mapStyles} from "./config/constants";
+import { doctorCategories, mapCenter, mapStyles } from "./config/constants";
 import LinkItem from "./components/LinkItem";
+import { getDistance } from "./config/constants";
 
 function App() {
   const mapRef = useRef(null);
@@ -99,9 +100,7 @@ function App() {
               />
             ))}
           </div>
-          <div className="total-list">
-            Total : {doctorDatas.length}
-          </div>
+          <div className="total-list">Total : {doctorDatas.length}</div>
         </div>
         <div style={{ width: "75%" }}>
           <GoogleMap
@@ -113,7 +112,7 @@ function App() {
               disableDefaultUI: true,
               zoomControl: true,
               clickableIcons: false,
-              gestureHandling: 'greedy',
+              gestureHandling: "greedy",
               // controlSize: isMobile ? 20 : 40,
             }}
             mapMinHeight="100vh"
@@ -158,7 +157,13 @@ function App() {
                   {infoDoctorData.address}
                 </div>
                 <div className="info-doctor-distance">
-                  {infoDoctorData.distance} miles
+                  {getDistance(
+                    mapCenter.lat,
+                    mapCenter.lng,
+                    infoLocation.lat,
+                    infoLocation.lng
+                  )}{" "}
+                  miles
                 </div>
               </div>
             )}
