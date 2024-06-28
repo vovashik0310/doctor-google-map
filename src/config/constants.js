@@ -44,8 +44,8 @@ export const doctorCategories = [
 ];
 
 export const mapCenter = {
-  lat: 40.75224,
-  lng: -74.05364,
+  lat: 40.752550,
+  lng: -74.051670,
 };
 
 export const mapStyles = [
